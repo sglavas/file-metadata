@@ -1,6 +1,7 @@
 var express = require('express');
 var cors = require('cors');
 require('dotenv').config()
+const upload = require('./middleware/upload');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.listen(port, function () {
 });
 
 
-app.post('/api/fileanalyse', (req,res) =>{
-  console.log("This works");
+app.post('/api/fileanalyse', upload.single('upfile'), (req,res) =>{
+  const { originalname, mimetype, size } = req.file;
+  res.json({ "name": originalname, "type": mimetype, "size": size });
 })
